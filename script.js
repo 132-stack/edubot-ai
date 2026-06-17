@@ -334,6 +334,36 @@ function showQuestion(){
 
     const q = quizData[quizIndex];
 
+    // Copy options so we don't modify the original
+    let shuffledOptions = [...q.options];
+
+    // Shuffle options randomly
+    shuffledOptions.sort(() => Math.random() - 0.5);
+
+    let html = `
+        <div class="quiz-card">
+            <h3>${q.question}</h3>
+    `;
+
+    shuffledOptions.forEach(option => {
+
+        const letter = option[0]; // A, B, C, or D
+
+        html += `
+            <button class="quiz-option"
+                onclick="selectAnswer('${letter}')">
+                ${option}
+            </button><br><br>
+        `;
+    });
+
+    html += `</div>`;
+
+    document.getElementById("quizBox").innerHTML = html;
+}
+
+    const q = quizData[quizIndex];
+
     document.getElementById("quizBox").innerHTML = `
         <div style="background:white;padding:15px;border-radius:10px;">
 
