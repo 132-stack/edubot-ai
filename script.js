@@ -292,7 +292,7 @@ function parseQuiz(text){
 
     quizData = blocks.map(block => {
 
-        const lines = block.split("\n").filter(l => l.trim() !== "");
+        const lines = block.split("\n").map(l => l.trim()).filter(l => l !== "");
 
         let question = lines[0] || "Question";
 
@@ -301,13 +301,15 @@ function parseQuiz(text){
 
         lines.forEach(line => {
 
-            if(line.startsWith("A)")) options.push(line);
-            if(line.startsWith("B)")) options.push(line);
-            if(line.startsWith("C)")) options.push(line);
-            if(line.startsWith("D)")) options.push(line);
+            if(/^A\)/.test(line)) options.push({ letter: 'A', text: line.replace(/^A\)\s*/, '') });
+            if(/^B\)/.test(line)) options.push({ letter: 'B', text: line.replace(/^B\)\s*/, '') });
+            if(/^C\)/.test(line)) options.push({ letter: 'C', text: line.replace(/^C\)\s*/, '') });
+            if(/^D\)/.test(line)) options.push({ letter: 'D', text: line.replace(/^D\)\s*/, '') });
 
-            if(line.startsWith("ANSWER:")){
-                answer = line.replace("ANSWER:", "").trim();
+            if(/^ANSWER:/i.test(line)){
+                // normalize to single uppercase letter (A-D)
+                const a = line.replace(/ANSWER:/i, '').trim();
+                answer = a[0] ? a[0].toUpperCase() : '';
             }
 
         });
@@ -334,19 +336,18 @@ function showQuestion(){
 
     const q = quizData[quizIndex];
 
-    let shuffled = [...q.options];
-    shuffled.sort(() => Math.random() - 0.5);
+    // keep original order (A, B, C, D)
+    const options = q.options || [];
 
     let html = `
         <div class="quiz-card">
             <h3>${q.question}</h3>
     `;
 
-    shuffled.forEach(opt => {
-
+    options.forEach(opt => {
         html += `
-            <button onclick="selectAnswer('${opt.replace(/'/g, "\\'")}')">
-                ${opt}
+            <button class="quiz-option" onclick="selectAnswer('${opt.letter}')">
+                ${opt.letter}) ${opt.text}
             </button><br><br>
         `;
     });
@@ -382,11 +383,7 @@ function selectAnswer(selected){
 
     const correctLetter = quizData[quizIndex].answer;
 
-    const correctOption = quizData[quizIndex].options.find(opt =>
-        opt.startsWith(correctLetter + ")")
-    );
-
-    if(selected === correctOption){
+    if(selected === correctLetter){
         quizScore++;
     }
 
