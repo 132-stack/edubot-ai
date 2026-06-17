@@ -8,7 +8,7 @@ function login(){
     const grade = document.getElementById("gradeInput").value;
 
     if(!name || !grade){
-        alert("Enter name and grade!");
+        alert("Please enter name and grade!");
         return;
     }
 
@@ -140,20 +140,7 @@ Answer: A
     parseQuiz(data.reply);
 }
 
-function parseQuiz(text){
 
-    currentQuiz = text.split("Q:")
-        .filter(q => q.trim() !== "");
-
-    currentScore = 0;
-
-    localStorage.setItem(
-        "lastQuiz",
-        JSON.stringify(currentQuiz)
-    );
-
-    alert("Quiz generated successfully!");
-}
 
 function addScore(){
     currentScore++;
@@ -294,7 +281,7 @@ function parseQuiz(text){
 
         const lines = block.split("\n").filter(l => l.trim() !== "");
 
-        let question = lines[0];
+        let question = lines[0] || "Question";
 
         let options = [];
         let answer = "";
@@ -361,36 +348,6 @@ function showQuestion(){
 
     document.getElementById("quizBox").innerHTML = html;
 }
-
-    const q = quizData[quizIndex];
-
-    document.getElementById("quizBox").innerHTML = `
-        <div style="background:white;padding:15px;border-radius:10px;">
-
-            <h3>${q.question}</h3>
-
-            ${q.options.map(opt => `
-                <button onclick="selectAnswer('${opt[0]}')">
-                    ${opt}
-                </button>
-                <br><br>
-            `).join("")}
-
-        </div>
-    `;
-}
-
-    const q = quizData[quizIndex];
-
-    document.getElementById("quizBox").innerHTML = `
-        <div style="padding:10px; background:white; border-radius:10px;">
-            <pre>${q}</pre>
-
-            <button onclick="answerQuiz(true)">Correct ✔</button>
-            <button onclick="answerQuiz(false)">Wrong ✖</button>
-        </div>
-    `;
-
 
 function answerQuiz(correct){
 
@@ -480,10 +437,7 @@ function loadDashboard(){
     loadScoreChart();
 }
 
-function openDashboard(){
-    showScreen("dashboardScreen");
-    loadDashboard();
-}
+
 
 function loadScoreChart(){
 
@@ -521,7 +475,19 @@ function loadScoreChart(){
 
 function renderChart(data){
 
-    document.getElementById("chartContainer").innerHTML = `
+    let html = `<h3>📊 Score by Subject</h3>`;
     
-    `;
+    data.forEach(item => {
+        const percentage = (item.score / 5 * 100).toFixed(0);
+        html += `
+            <div style="margin:10px 0;">
+                <p><strong>${item.subject}</strong>: ${item.score}/5 (${percentage}%)</p>
+                <div style="background:#ddd; height:20px; border-radius:5px; overflow:hidden;">
+                    <div style="background:#4CAF50; height:100%; width:${percentage}%;"></div>
+                </div>
+            </div>
+        `;
+    });
+    
+    document.getElementById("chartContainer").innerHTML = html;
 }
