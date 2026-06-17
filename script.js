@@ -44,7 +44,10 @@ function showHome(){
 
 function openChat(){ showScreen("chatScreen"); }
 function openQuiz(){ showScreen("quizScreen"); }
-function openDashboard(){ showScreen("dashboardScreen"); }
+function openDashboard(){ 
+    showScreen("dashboardScreen");
+    loadDashboard();
+}
 function openFeedback(){ showScreen("feedbackScreen"); }
 
 //
