@@ -244,19 +244,32 @@ async function startQuiz(subject){
 
     const grade = localStorage.getItem("studentGrade");
 
+    const seed = Math.random().toString(36).substring(2, 8);
+
     document.getElementById("quizBox").innerHTML =
         "⏳ Generating quiz...";
 
-    const res = await fetch("/chat", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({
-            message: `
-Create 5 multiple choice questions for ${subject}.
+  const res = await fetch("/chat", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+        message: `
+You are an AI quiz generator.
 
-Grade level: ${grade}.
+Generate 5 COMPLETELY NEW and UNIQUE multiple choice questions for ${subject}.
 
-STRICT FORMAT:
+RULES:
+- Do NOT repeat common textbook questions
+- Do NOT reuse previous patterns
+- Make each question different in style
+- Mix easy, medium, and hard difficulty
+- Use real-world examples where possible
+- Avoid repeating similar topics in the same quiz
+- Ensure questions are NEVER repeated in future quizzes even in structure.
+
+Grade level: ${grade}
+
+FORMAT STRICTLY:
 
 Q: question
 A) option
@@ -264,12 +277,9 @@ B) option
 C) option
 D) option
 ANSWER: A
-
-Repeat for 5 questions.
-The answer must be related to the question and options. Do not make it random. Make it correct based on the question and options.
-`
-        })
-    });
+        `
+    })
+});
 
     const data = await res.json();
 
@@ -324,25 +334,19 @@ function showQuestion(){
 
     const q = quizData[quizIndex];
 
-    // Copy options so we don't modify the original
-    let shuffledOptions = [...q.options];
-
-    // Shuffle options randomly
-    shuffledOptions.sort(() => Math.random() - 0.5);
+    let shuffled = [...q.options];
+    shuffled.sort(() => Math.random() - 0.5);
 
     let html = `
         <div class="quiz-card">
             <h3>${q.question}</h3>
     `;
 
-    shuffledOptions.forEach(option => {
-
-        const letter = option[0]; // A, B, C, or D
+    shuffled.forEach(opt => {
 
         html += `
-            <button class="quiz-option"
-                onclick="selectAnswer('${letter}')">
-                ${option}
+            <button onclick="selectAnswer('${opt.replace(/'/g, "\\'")}')">
+                ${opt}
             </button><br><br>
         `;
     });
@@ -376,9 +380,13 @@ function endQuiz(){
 
 function selectAnswer(selected){
 
-    const correct = quizData[quizIndex].answer;
+    const correctLetter = quizData[quizIndex].answer;
 
-    if(selected === correct){
+    const correctOption = quizData[quizIndex].options.find(opt =>
+        opt.startsWith(correctLetter + ")")
+    );
+
+    if(selected === correctOption){
         quizScore++;
     }
 
