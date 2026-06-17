@@ -8,7 +8,7 @@ function login(){
     const grade = document.getElementById("gradeInput").value;
 
     if(!name || !grade){
-        alert("Please enter name and grade!");
+        alert("Enter name and grade!");
         return;
     }
 
