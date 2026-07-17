@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: edubot
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node_modules/.bin/serve -s dist
+    envVars:
+      - key: NODE_VERSION
+        value: 18
