@@ -1,154 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduBot AI - Learning Platform</title>
-
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="4ea398f2-e8e3-40c9-9492-5c1aa6dc2336"></script>
-
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "xndcqnjtzv");
-</script>
-
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<!-- 🌙 TOP BAR -->
-<div class="topbar">
-    <h2>EduBot AI</h2>
-
-    <button onclick="toggleDarkMode()" class="dark-btn">
-        🌙
-    </button>
-</div>
-
-<!-- ================= LOGIN SCREEN ================= -->
-<section id="loginScreen" class="screen active">
-
-    <div class="login-box">
-
-        <h1>👋 Welcome!</h1>
-        <p>Enter your details to start learning</p>
-
-        <input id="nameInput" placeholder="Enter your name">
-
-        <select id="gradeInput">
-            <option value="">Select Grade</option>
-            <option value="1">Grade 1</option>
-            <option value="2">Grade 2</option>
-            <option value="3">Grade 3</option>
-            <option value="4">Grade 4</option>
-            <option value="5">Grade 5</option>
-            <option value="6">Grade 6</option>
-            <option value="7">Grade 7</option>
-            <option value="8">Grade 8</option>
-            <option value="9">Grade 9</option>
-        </select>
-
-        <button onclick="login()" class="primary-btn">
-            Start Learning 🚀
-        </button>
-
-    </div>
-
-</section>
-
-<!-- ================= HOME SCREEN ================= -->
-<section id="homeScreen" class="screen hidden">
-
-    <div class="welcome">
-        <h1 id="welcomeText">Welcome!</h1>
-        <p>Choose your learning adventure</p>
-    </div>
-
-    <div class="card-grid">
-
-        <div class="card" onclick="openChat()">
-            🤖 AI Chat
-        </div>
-
-        <div class="card" onclick="openQuiz()">
-            📝 Quiz Mode
-        </div>
-
-        <div class="card" onclick="openDashboard()">
-            📊 Dashboard
-        </div>
-
-        <div class="card" onclick="openFeedback()">
-            🏆 AI Feedback
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ================= PLACEHOLDER SCREENS ================= -->
-
-<section id="chatScreen" class="screen hidden">
-    <button class="back-btn" onclick="goHome()">⬅ Back</button>
-
-    <h2>🤖 AI Tutor Chat</h2>
-
-    <div id="chatBox" style="height:300px; overflow:auto; background:white; padding:10px; border-radius:10px;"></div>
-
-    <input id="chatInput" placeholder="Ask something..." />
-
-    <button onclick="sendChat()">Send</button>
-
-</section>
-
-<section id="quizScreen" class="screen hidden">
-    <button class="back-btn" onclick="goHome()">⬅ Back</button>
-
-    <h2>📝 Quiz Mode</h2>
-
-    <p>Select a subject:</p>
-
-    <button onclick="startQuiz('Science')">Science</button>
-    <button onclick="startQuiz('Math')">Math</button>
-    <button onclick="startQuiz('English')">English</button>
-    <button onclick="startQuiz('Social Studies')">SST</button>
-
-    <hr>
-
-    <div id="quizBox"></div>
-
-</section>
-<section id="dashboardScreen" class="screen hidden">
-
-<button class="back-btn" onclick="goHome()">⬅ Back</button>
-
-<h2>📊 Your Learning Dashboard</h2>
-
-<div id="dashboardBox"></div>
-
-<div id="chartContainer" style="margin-top:20px;"></div>
-
-</section>
-
-<section id="feedbackScreen" class="screen hidden">
-
-<button class="back-btn" onclick="goHome()">⬅ Back</button>
-
-<h2>🏆 AI Feedback Report</h2>
-
-<button onclick="generateFeedback()">Generate Feedback</button>
-
-<div id="feedbackBox"
-style="margin-top:15px; background:white; padding:15px; border-radius:10px;">
-</div>
-
-</section>
-
-<script src="script.js"></script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduBot AI</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      #root {
+        width: 100%;
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
